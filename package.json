@@ -1,0 +1,23 @@
+{
+  "name": "@risecorejs/validator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "middleware.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/risecorejs/validator.git"
+  },
+  "author": "Amenov Abdulsalam <risecorejs@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/risecorejs/validator/issues"
+  },
+  "homepage": "https://github.com/risecorejs/validator#readme",
+  "dependencies": {
+    "libphonenumber-js": "^1.9.8",
+    "moment": "^2.29.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
+  }
+}
