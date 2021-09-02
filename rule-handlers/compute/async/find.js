@@ -12,9 +12,22 @@ module.exports = async ({
 
     const [table, tableColumn] = ruleArg.split('-')
 
-    const [result] = await sequelize.query(
-      `SELECT * FROM ${table} WHERE ${tableColumn} = "${requestValue}"`
-    )
+    const dialect = sequelize.dialect.sequelize.options.dialect
+
+    let query = null
+
+    switch (dialect) {
+      case 'mysql':
+        query = `SELECT \`${tableColumn}\` FROM \`${table}\` WHERE \`${tableColumn}\` = '${requestValue}' LIMIT 1`
+        break
+      case 'postgres':
+        query = `SELECT "${tableColumn}" FROM "${table}" WHERE "${tableColumn}" = '${requestValue}' LIMIT 1`
+        break
+      default:
+        break
+    }
+
+    const [result] = await sequelize.query(query)
 
     if (!result[0]) {
       return errorMessage(table)
