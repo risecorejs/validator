@@ -6,6 +6,6 @@ module.exports = ({
   errorMessage,
   errorMessagesWrapper
 }) => {
-  if (!moment(requestValue, format ?? true).isValid())
+  if (!moment(requestValue, format || true).isValid())
     return errorMessagesWrapper(errorMessage).emw2()
 }

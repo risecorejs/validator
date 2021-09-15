@@ -26,5 +26,5 @@ module.exports = (errorMessage) => ({
 
     return errorMessage
   },
-  emw2: () => errorMessage.custom ?? errorMessage.default
+  emw2: () => errorMessage.custom || errorMessage.default
 })
