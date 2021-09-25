@@ -24,7 +24,7 @@ module.exports = class Validator {
     for (const key in this.#rules) {
       if (
         key.startsWith('$') ||
-        this.#rules[key].__proto__ !== Object.prototype
+        this.#rules[key]?.__proto__ !== Object.prototype
       )
         continue
 
