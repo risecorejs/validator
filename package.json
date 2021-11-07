@@ -1,6 +1,6 @@
 {
   "name": "@risecorejs/validator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "middleware.js",
   "repository": {
