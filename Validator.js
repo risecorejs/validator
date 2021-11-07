@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const ruleConfig = require(__dirname + '/rule-config')
 const errorMessagesWrapper = require(__dirname + '/error-messages-wrapper')
 
@@ -22,36 +24,71 @@ module.exports = class Validator {
     const formattedRules = []
 
     for (const key in this.#rules) {
-      if (
-        key.startsWith('$') ||
-        this.#rules[key]?.__proto__ !== Object.prototype
-      )
-        continue
+      const value = this.#rules[key]
 
-      Object.assign(this.#rules, {
-        [key]: 'object',
-        ['$' + key]: this.#rules[key]
-      })
+      if (key.startsWith('$') || value?.__proto__ !== Object.prototype) continue
+
+      this.#rules[key] = 'object'
+      this.#rules['$' + key] = value
     }
 
     for (const key in this.#rules) {
+      const value = this.#rules[key]
+
       if (
         key.startsWith('$') ||
-        !(this.#rules[key] && typeof this.#rules[key] === 'string')
+        (!value && !value?.length) ||
+        (typeof value !== 'string' && !Array.isArray(value) && typeof value !== 'function')
       )
         continue
 
-      const rules = this.#rules[key].split('|').map((rule) => {
-        if (rule.includes(':')) {
-          const [name, arg] = rule.split(':')
+      if (typeof value == 'string') {
+        const rules = value.split('|').map((rule) => {
+          if (rule.includes(':')) {
+            const [name, arg] = rule.split(':')
 
-          return { name, arg }
-        } else {
+            return { name, arg }
+          }
+
           return { name: rule }
-        }
-      })
+        })
 
-      formattedRules.push({ key, rules })
+        formattedRules.push({ key, rules })
+
+        continue
+      }
+
+      if (Array.isArray(value)) {
+        const rules = value.map((rule) => {
+          if (typeof rule === 'string') {
+            if (rule.includes(':')) {
+              const [name, arg] = rule.split(':')
+
+              return { name, arg }
+            }
+
+            return { name: rule }
+          }
+
+          if (Array.isArray(rule)) {
+            const [name, arg] = rule
+
+            return { name, arg }
+          }
+
+          if (typeof rule === 'function') {
+            return rule
+          }
+        })
+
+        formattedRules.push({ key, rules })
+
+        continue
+      }
+
+      if (typeof value === 'function') {
+        formattedRules.push({ key, rules: value })
+      }
     }
 
     return formattedRules
@@ -69,27 +106,73 @@ module.exports = class Validator {
 
   async fails() {
     for (const { key, rules } of this.#formattedRules) {
-      for (const rule of rules) {
-        const message = await this.#ruleHandler(rule.name, {
+      if (Array.isArray(rules)) {
+        for (const rule of rules) {
+          if (typeof rule === 'function') {
+            const message = await rule({
+              request: this.#request,
+              rules: this.#rules,
+              options: this.#options,
+              requestKey: key,
+              requestValue: this.#request[key]
+            })
+
+            if (message) {
+              if (message === 'skip') {
+                break
+              } else {
+                this.errors[key] = message
+
+                break
+              }
+            }
+
+            continue
+          }
+
+          const message = await this.#ruleHandler(rule.name, {
+            request: this.#request,
+            rules: this.#rules,
+            options: this.#options,
+            requestKey: key,
+            requestValue: this.#request[key],
+            ruleArg: rule.arg,
+            errorMessage: {
+              default: this.#errorMessages[rule.name],
+              custom: this.#options.errorMessages?.[key]?.[rule.name]
+            },
+            errorMessagesWrapper
+          })
+
+          if (message === 'skip') {
+            break
+          } else if (message) {
+            this.errors[key] = message
+
+            break
+          }
+        }
+
+        continue
+      }
+
+      if (typeof rules === 'function') {
+        const message = await rules({
           request: this.#request,
           rules: this.#rules,
           options: this.#options,
           requestKey: key,
-          requestValue: this.#request[key],
-          ruleArg: rule.arg,
-          errorMessage: {
-            default: this.#errorMessages[rule.name],
-            custom: this.#options.errorMessages?.[key]?.[rule.name]
-          },
-          errorMessagesWrapper
+          requestValue: this.#request[key]
         })
 
-        if (message === 'skip') {
-          break
-        } else if (message) {
-          this.errors[key] = message
+        if (message) {
+          if (message === 'skip') {
+            break
+          } else {
+            this.errors[key] = message
 
-          break
+            break
+          }
         }
       }
     }
@@ -98,6 +181,6 @@ module.exports = class Validator {
   }
 
   get failed() {
-    return !!Object.keys(this.errors).length
+    return !_.isEmpty(this.errors)
   }
 }

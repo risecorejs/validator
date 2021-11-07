@@ -22,12 +22,9 @@ module.exports = async ({
   const errors = []
 
   for (const [index, item] of requestValue.entries()) {
-    if (item === undefined) continue
+    if (item === void 0) continue
 
-    if (
-      (type === 'object' && item.__proto__ !== Object.prototype) ||
-      (typeof item !== type && type !== 'object')
-    ) {
+    if ((type === 'object' && item.__proto__ !== Object.prototype) || (typeof item !== type && type !== 'object')) {
       errors[index] = {
         message: errorMessage.expectedType(type),
         index
@@ -43,19 +40,12 @@ module.exports = async ({
     const wrapper = (val) => (type === 'object' ? val : { message: val })
 
     if (options.errorMessages?.[requestKey]?.[type]) {
-      Object.assign(
-        options.errorMessages,
-        wrapper(options.errorMessages[requestKey][type])
-      )
+      Object.assign(options.errorMessages, wrapper(options.errorMessages[requestKey][type]))
 
       delete options.errorMessages[requestKey]
     }
 
-    const validation = new Validator(
-      wrapper(item),
-      wrapper(validationRules),
-      options
-    )
+    const validation = new Validator(wrapper(item), wrapper(validationRules), options)
 
     await validation.fails()
 
