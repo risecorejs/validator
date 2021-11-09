@@ -1,39 +1,50 @@
 const Validator = require('./Validator')
 
 const request = {
-  test: {
-    login: 'amenov',
-    test: 'test'
-  }
+  name: 'amenov',
+  email: 'a.amenov@gmail.com',
+  password: 'asd123as',
+  passwordConfirm: 'asd123as',
+  test: [1, '2', 3]
 }
 
 const rules = {
-  test: {
-    login: [
-      'required|string|validate:password,test',
-      ({ request }) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            console.log(request)
+  name: ['required', 'string', 'max:200'],
+  email: ['required|email', ['max', 200]],
+  password: 'required|string|min:8|max:200',
+  passwordConfirm: ['required|as:password', () => console.log('OK')],
+  test: 'array:string',
+  '$test:string': 'min:3'
+}
 
-            console.log('custom rule for login')
-
-            resolve()
-          }, 1000)
-        })
+const options = {
+  locale: 'ru',
+  errorMessages: {
+    pinpoint: {
+      name: {
+        string: 'Имя должно быть строкой!'
       }
-    ],
-    password: 'required|string',
-    test: ['required|string']
+      // test: {
+      //   string: {
+      //     min: (v) => 'эу минимум: ' + v
+      //   }
+      // }
+    },
+    common: {
+      string: 'Данное поле не может быть ничем другим, кроме строки!',
+      min: {
+        main: (v) => 'эу минимум: ' + v
+      }
+    }
   }
 }
 
 void (async () => {
-  const validator = new Validator(request, rules)
+  const validator = new Validator(request, rules, options)
 
   await validator.fails()
 
   if (validator.failed) {
-    console.log(validator.errors)
+    console.log(JSON.stringify(validator.errors, null, 2))
   }
 })()

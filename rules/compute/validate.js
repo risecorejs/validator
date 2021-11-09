@@ -1,6 +1,6 @@
 const Validator = require('../../Validator')
 
-module.exports = async ({ request, rules, ruleArg }) => {
+module.exports = async ({ request, rules, ruleArg, options }) => {
   const keys = ruleArg.split(',')
 
   const _request = {}
@@ -11,7 +11,7 @@ module.exports = async ({ request, rules, ruleArg }) => {
     _rules[key] = rules[key]
   })
 
-  const validator = new Validator(_request, _rules)
+  const validator = new Validator(_request, _rules, options)
 
   await validator.fails()
 

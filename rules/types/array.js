@@ -49,10 +49,10 @@ module.exports = async ({
 
     const wrapper = (val) => (type === 'object' ? val : { message: val })
 
-    if (options.errorMessages?.[requestKey]?.[type]) {
-      Object.assign(options.errorMessages, wrapper(options.errorMessages[requestKey][type]))
+    if (options.errorMessages?.pinpoint?.[requestKey]?.[type]) {
+      Object.assign(options.errorMessages.pinpoint, wrapper(options.errorMessages.pinpoint?.[requestKey][type]))
 
-      delete options.errorMessages[requestKey]
+      delete options.errorMessages.pinpoint[requestKey]
     }
 
     const validation = new Validator(wrapper(item), wrapper(validationRules), options)

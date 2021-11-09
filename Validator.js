@@ -27,7 +27,9 @@ module.exports = class Validator {
    * @return {Object}
    */
   get #errorMessages() {
-    return require(`./locale/${this.#options.locale}/error-messages`)
+    const errorMessages = require(`./locale/${this.#options.locale}/error-messages`)
+
+    return Object.assign(errorMessages, this.#options.errorMessages?.common || {})
   }
 
   /**
@@ -182,7 +184,7 @@ module.exports = class Validator {
             ruleArg: rule.arg,
             errorMessage: {
               default: this.#errorMessages[rule.name],
-              custom: this.#options.errorMessages?.[key]?.[rule.name]
+              custom: this.#options.errorMessages?.pinpoint?.[key]?.[rule.name]
             },
             errorMessagesWrapper
           })
