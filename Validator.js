@@ -163,17 +163,9 @@ module.exports = class Validator {
       options: this.#options
     }
 
-    this.#options.processed ||= {}
-
     for (const { key, rules } of this.#parsedRules) {
       ruleOptions.requestKey = key
       ruleOptions.requestValue = this.#request[key]
-
-      if (this.#options.processed[key]) {
-        continue
-      } else {
-        this.#options.processed[key] = true
-      }
 
       if (Array.isArray(rules)) {
         for (const rule of rules) {

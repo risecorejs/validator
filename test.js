@@ -6,11 +6,15 @@ const request = {
   // password: 'asd123as',
   // passwordConfirm: 'asd123as',
   // test: [1, '2', 3]
+  arr: ['3', '2', '1']
 }
 
 const rules = {
-  email: [() => console.log('email'), 'validate:password'],
-  password: [() => console.log('password'), 'validate:email']
+  test: 'validate:arr',
+  arr: 'array:string',
+  '$arr:string': 'min:3'
+  // email: [() => console.log('email'), 'validate:password'],
+  // password: [() => console.log('password'), 'validate:email']
   // name: ['required', 'string', 'max:200'],
   // email: ['required|email', ['max', 200]],
   // password: 'required|string|min:8|max:200',
