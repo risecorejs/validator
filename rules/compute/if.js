@@ -19,7 +19,9 @@ module.exports = ({ request, ruleArg: condition }) => {
 
       const result = handler(request[key], eval(value))
 
-      if (!result) return 'skip'
+      if (!result) {
+        return 'skip'
+      }
 
       break
     }

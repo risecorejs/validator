@@ -1,4 +1,4 @@
-const locale = {
+module.exports = {
   // COMPUTE
   find: (table) => `Not found in the table "${table}"`,
   findRaw: 'Not found',
@@ -34,8 +34,7 @@ const locale = {
   // TYPES
   array: {
     main: 'This field must be a "array"',
-    typeNotSupported:
-      'The type you specified was not found in the list of available types.',
+    typeNotSupported: 'The type you specified was not found in the list of available types.',
     expectedType: (type) => `Array element must be of type "${type}"`
   },
   boolean: 'This field must be a "boolean"',
@@ -43,5 +42,3 @@ const locale = {
   object: 'This field must be a "object"',
   string: 'This field must be a "string"'
 }
-
-module.exports = locale

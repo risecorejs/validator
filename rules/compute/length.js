@@ -1,9 +1,4 @@
-module.exports = ({
-  requestValue,
-  ruleArg: length,
-  errorMessage,
-  errorMessagesWrapper
-}) => {
+module.exports = ({ requestValue, ruleArg: length, errorMessage, errorMessagesWrapper }) => {
   if (requestValue.length !== +length) {
     errorMessage = errorMessagesWrapper(errorMessage).emw2()
 

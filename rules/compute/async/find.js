@@ -1,11 +1,7 @@
-module.exports = async ({
-  ruleArg,
-  requestValue,
-  errorMessage,
-  errorMessagesWrapper,
-  options: { sequelize }
-}) => {
-  if (!sequelize) return
+module.exports = async ({ ruleArg, requestValue, errorMessage, errorMessagesWrapper, options: { sequelize } }) => {
+  if (!sequelize) {
+    return
+  }
 
   try {
     errorMessage = errorMessagesWrapper(errorMessage).emw2()

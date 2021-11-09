@@ -1,10 +1,4 @@
-module.exports = ({
-  request,
-  requestValue: value,
-  ruleArg: condition,
-  errorMessage,
-  errorMessagesWrapper
-}) => {
+module.exports = ({ request, requestValue: value, ruleArg: condition, errorMessage, errorMessagesWrapper }) => {
   let required = true
 
   if (condition) {
@@ -28,7 +22,9 @@ module.exports = ({
 
         const result = handler(request[key], eval(value))
 
-        if (!result) required = false
+        if (!result) {
+          required = false
+        }
 
         break
       }
@@ -36,14 +32,17 @@ module.exports = ({
   }
 
   if (required) {
-    if (typeof value === 'string') value = value.trim()
+    if (typeof value === 'string') {
+      value = value.trim()
+    }
 
     if (
       value === void 0 ||
       value === null ||
       value.length === 0 ||
       (value.__proto__ === Object.prototype && !Object.keys(value).length)
-    )
+    ) {
       return errorMessagesWrapper(errorMessage).emw2()
+    }
   }
 }

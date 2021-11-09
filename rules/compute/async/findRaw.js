@@ -1,10 +1,8 @@
-module.exports = async ({
-  ruleArg: query,
-  errorMessage,
-  errorMessagesWrapper,
-  options: { sequelize }
-}) => {
-  if (!sequelize) return
+module.exports = async ({ ruleArg: query, errorMessage, errorMessagesWrapper, options: { sequelize } }) => {
+  if (!sequelize) {
+    return
+  }
+
   try {
     const [result] = await sequelize.query(query)
 

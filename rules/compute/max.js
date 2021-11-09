@@ -1,17 +1,9 @@
-module.exports = ({
-  requestValue: value,
-  ruleArg: num,
-  errorMessage,
-  errorMessagesWrapper
-}) => {
+module.exports = ({ requestValue: value, ruleArg: num, errorMessage, errorMessagesWrapper }) => {
   errorMessage = errorMessagesWrapper(errorMessage).emw1()
 
-  if (
-    typeof value !== 'string' &&
-    typeof value !== 'number' &&
-    !Array.isArray(value)
-  )
+  if (typeof value !== 'string' && typeof value !== 'number' && !Array.isArray(value)) {
     return errorMessage.typeError
+  }
 
   if (
     !(
@@ -19,6 +11,7 @@ module.exports = ({
       (typeof value === 'number' && value <= num) ||
       (Array.isArray(value) && value.length <= num)
     )
-  )
+  ) {
     return errorMessage.main(num)
+  }
 }

@@ -1,4 +1,5 @@
 module.exports = ({ requestValue, errorMessage, errorMessagesWrapper }) => {
-  if (typeof requestValue !== 'number')
+  if (typeof requestValue !== 'string') {
     return errorMessagesWrapper(errorMessage).emw2()
+  }
 }

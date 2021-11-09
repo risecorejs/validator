@@ -1,11 +1,4 @@
-module.exports = ({
-  request,
-  requestKey,
-  requestValue,
-  ruleArg,
-  errorMessage,
-  errorMessagesWrapper
-}) => {
+module.exports = ({ request, requestKey, requestValue, ruleArg, errorMessage, errorMessagesWrapper }) => {
   if (requestValue !== request[ruleArg]) {
     errorMessage = errorMessagesWrapper(errorMessage).emw2()
 

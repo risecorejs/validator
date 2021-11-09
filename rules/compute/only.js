@@ -1,9 +1,4 @@
-module.exports = ({
-  requestValue,
-  ruleArg,
-  errorMessage,
-  errorMessagesWrapper
-}) => {
+module.exports = ({ requestValue, ruleArg, errorMessage, errorMessagesWrapper }) => {
   const values = ruleArg.split(',').map((value) => eval(value))
 
   if (!values.includes(requestValue)) {

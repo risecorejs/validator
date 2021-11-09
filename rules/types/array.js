@@ -11,18 +11,26 @@ module.exports = async ({
 }) => {
   errorMessage = errorMessagesWrapper(errorMessage).emw1()
 
-  if (!Array.isArray(requestValue)) return errorMessage.main()
+  if (!Array.isArray(requestValue)) {
+    return errorMessage.main()
+  }
 
-  if (!type) return
+  if (!type) {
+    return
+  }
 
   const availableTypes = ['string', 'boolean', 'number', 'object']
 
-  if (!availableTypes.includes(type)) return errorMessage.typeNotSupported
+  if (!availableTypes.includes(type)) {
+    return errorMessage.typeNotSupported
+  }
 
   const errors = []
 
   for (const [index, item] of requestValue.entries()) {
-    if (item === void 0) continue
+    if (item === void 0) {
+      continue
+    }
 
     if ((type === 'object' && item.__proto__ !== Object.prototype) || (typeof item !== type && type !== 'object')) {
       errors[index] = {
@@ -35,7 +43,9 @@ module.exports = async ({
 
     const validationRules = rules['$' + requestKey + ':' + type]
 
-    if (!validationRules) continue
+    if (!validationRules) {
+      continue
+    }
 
     const wrapper = (val) => (type === 'object' ? val : { message: val })
 
@@ -54,5 +64,7 @@ module.exports = async ({
     }
   }
 
-  if (errors.length) return errors
+  if (errors.length) {
+    return errors
+  }
 }
