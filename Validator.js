@@ -165,10 +165,12 @@ module.exports = class Validator {
 
     for (const { key, rules } of this.#parsedRules) {
       ruleOptions.requestKey = key
-      ruleOptions.requestValue = this.#request[key]
+      ruleOptions.requestValue = ruleOptions.request[key]
 
       if (Array.isArray(rules)) {
         for (const rule of rules) {
+          ruleOptions.requestValue = ruleOptions.request[key]
+
           if (typeof rule === 'function') {
             const message = await rule(ruleOptions)
 
