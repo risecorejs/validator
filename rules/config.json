@@ -1,0 +1,31 @@
+{
+  "allowEmpty": "break/allow-empty",
+  "allowFalse": "break/allow-false",
+  "allowNull": "break/allow-null",
+  "allowZero": "break/allow-zero",
+  "ifExists": "break/if-exists",
+  
+  "find": "compute/async/find",
+  "findRaw": "compute/async/findRaw",
+  "unique": "compute/async/unique",
+  "as": "compute/as",
+  "between": "compute/between",
+  "if": "compute/if",
+  "length": "compute/length",
+  "max": "compute/max",
+  "min": "compute/min",
+  "only": "compute/only",
+  "required": "compute/required",
+  "validate": "compute/validate",
+  
+  "date": "entities/date",
+  "email": "entities/email",
+  "tel": "entities/tel",
+  
+  
+  "array": "types/array",
+  "boolean": "types/boolean",
+  "number": "types/number",
+  "object": "types/object",
+  "string": "types/string"
+}

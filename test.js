@@ -3,7 +3,7 @@ const validator = require('./index')
 const body = {
   username: 'amenov',
   email: 'amenov.abdulsalam@gmail.com',
-  tel: '+77075733900',
+  tel: '+77776665544',
   password: '123456789',
   passwordConfirm: '123456789',
   birthday: 1998,
