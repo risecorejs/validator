@@ -3,7 +3,7 @@ module.exports = {
   find: (table) => `Не найдено в таблице "${table}"`,
   findRaw: 'Не найдено',
   unique: 'Значение этого поля должно быть уникальным',
-  as: (requestKey, targetKey) => `Значение поля "${requestKey}" не соответствует значению поля "${targetKey}"`,
+  as: (field, targetKey) => `Значение поля "${field}" не соответствует значению поля "${targetKey}"`,
   between: {
     typeError: 'Тип может быть только: string, number, array',
     max: (num) => `Максимум: ${num}`,

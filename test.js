@@ -1,56 +1,73 @@
-const Validator = require('./Validator')
+const validator = require('./index')
 
-const request = {
-  // name: 'amenov',
-  // email: 'a.amenov@gmail.com',
-  // password: 'asd123as',
-  // passwordConfirm: 'asd123as',
-  // test: [1, '2', 3]
-  arr: ['3', '2', '1']
+const body = {
+  username: 'amenov',
+  email: 'amenov.abdulsalam@gmail.com',
+  tel: '+77075733900',
+  password: '123456789',
+  passwordConfirm: '123456789',
+  birthday: 1998,
+  role: 'admin',
+  companyIds: [1, 2, 3],
+  addresses: [
+    {
+      country: 'Kazakhstan',
+      city: 'Almaty'
+    },
+    {
+      country: 'Russia',
+      city: 'Moscow',
+      info: {
+        postcode: '100000',
+        street: 'Lenina'
+      }
+    }
+  ],
+  family: {
+    mom: 'Alena',
+    dad: 'Ravil'
+  }
 }
 
+const customRule = ({ value, body }) => {
+  if (value.includes(body.username)) {
+    return 'password_cannot_contain_username'
+  }
+}
+
+const roles = ['admin', 'manager']
+
 const rules = {
-  test: 'validate:arr',
-  arr: 'array:string',
-  '$arr:string': 'min:3'
-  // email: [() => console.log('email'), 'validate:password'],
-  // password: [() => console.log('password'), 'validate:email']
-  // name: ['required', 'string', 'max:200'],
-  // email: ['required|email', ['max', 200]],
-  // password: 'required|string|min:8|max:200',
-  // passwordConfirm: ['required|as:password', () => console.log('OK')],
-  // test: 'array:string',
-  // '$test:string': 'min:3'
+  username: 'required|string|max:200',
+  email: ['required|string', ['max', 200]],
+  tel: 'required|tel', // tel:[countryCode]
+  password: ['required|string|min:6|max:200|validate:username', customRule],
+  passwordConfirm: 'required|as:password',
+  birthday: `required|number|between:1900-${new Date().getFullYear()}`,
+  role: ['required|string', ['only', roles]],
+  companyIds: 'ifExists|array:number',
+  addresses: 'required|array:object',
+  $addresses: {
+    country: 'required|string',
+    city: 'required|string',
+    info: 'ifExists|object',
+    $info: {
+      postcode: 'required|string',
+      street: 'required|string'
+    }
+  },
+  family: {
+    mom: 'required|string|max:200',
+    dad: 'required|string|max:200'
+  }
 }
 
 const options = {
-  // locale: 'ru',
-  // errorMessages: {
-  //   pinpoint: {
-  //     name: {
-  //       string: 'Имя должно быть строкой!'
-  //     },
-  //     test: {
-  //       string: {
-  //         min: (v) => 'эу минимум: ' + v
-  //       }
-  //     }
-  //   },
-  //   common: {
-  //     string: 'Данное поле не может быть ничем другим, кроме строки!',
-  //     min: {
-  //       main: (v) => 'эу минимум: ' + v
-  //     }
-  //   }
-  // }
+  locale: 'en'
 }
 
 void (async () => {
-  const validator = new Validator(request, rules, options)
+  const errors = await validator(body, rules, options)
 
-  await validator.fails()
-
-  if (validator.failed) {
-    console.log(JSON.stringify(validator.errors, null, 2))
-  }
+  console.log(errors)
 })()
