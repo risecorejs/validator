@@ -22,6 +22,8 @@ module.exports = ({ argument: condition, body }) => {
       if (!result) {
         return 'break'
       }
+
+      break
     }
   }
 }
