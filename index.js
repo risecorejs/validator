@@ -95,7 +95,7 @@ function getFormattedRules(rawRules) {
   const formattedRules = []
 
   for (const field in rawRules) {
-    if (rawRules.hasOwnProperty(field)) {
+    if (rawRules.hasOwnProperty(field) && !field.startsWith('$')) {
       const formattedRule = {
         field,
         rules: []
@@ -142,7 +142,7 @@ function getFormattedRules(rawRules) {
             })
           }
         }
-      } else if (rawRules[field].constructor === Object && !field.startsWith('$')) {
+      } else if (rawRules[field].constructor === Object) {
         rawRules['$' + field] = rawRules[field]
 
         formattedRule.rules.push('object')
