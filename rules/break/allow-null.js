@@ -1,5 +1,6 @@
-module.exports = ({ value }) => {
-  if (value === null) {
-    return 'break'
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    if (ctx.value === null) {
+        return 'break';
+    }
+};

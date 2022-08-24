@@ -1,5 +1,6 @@
-module.exports = ({ value }) => {
-  if (value?.length === 0 || (value?.constructor === Object && Object.keys(value).length === 0)) {
-    return 'break'
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    if (ctx.value?.length === 0 || (ctx.value?.constructor === Object && Object.keys(ctx.value).length === 0)) {
+        return 'break';
+    }
+};

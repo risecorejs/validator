@@ -1,11 +1,8 @@
-module.exports = ({ value, errorMessage }) => {
-  if (
-    typeof value !== 'string' ||
-    value.trim() === '' ||
-    !value.match(
-      /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-    )
-  ) {
-    return errorMessage
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    if (typeof ctx.value !== 'string' ||
+        ctx.value.trim() === '' ||
+        !ctx.value.match(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i)) {
+        return ctx.errorMessage;
+    }
+};

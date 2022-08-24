@@ -1,42 +1,37 @@
-const _ = require('lodash')
-
-const validator = require('../../index')
-
-module.exports = async ({ rawRules, field, value, argument: type, options, errorMessage }) => {
-  if (!Array.isArray(value)) {
-    return errorMessage.main
-  }
-
-  if (type) {
-    if (!['boolean', 'number', 'object', 'string'].includes(type)) {
-      return errorMessage.typeNotSupported
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+const _ = require('lodash');
+const index_1 = __importDefault(require("../../index"));
+module.exports = async function (ctx) {
+    if (!Array.isArray(ctx.value)) {
+        return ctx.errorMessage.main;
     }
-
-    const errors = {}
-
-    for (const [index, item] of value.entries()) {
-      if ((type === 'object' && item.constructor !== Object) || (typeof item !== type && type !== 'object')) {
-        errors[index] = errorMessage.expectedType(type)
-
-        continue
-      }
-
-      const _rawRules = rawRules['$' + field]
-
-      if (_rawRules) {
-        const _errors = await validator(
-          ...(item.constructor === Object ? [item, _rawRules] : [{ data: item }, { data: _rawRules }]),
-          options
-        )
-
-        if (_errors) {
-          errors[index] = item.constructor === Object ? _errors : _errors.data
+    if (ctx.argument) {
+        if (!['boolean', 'number', 'object', 'string'].includes(ctx.argument)) {
+            return ctx.errorMessage.typeNotSupported;
         }
-      }
+        const errors = {};
+        for (const [index, item] of ctx.value.entries()) {
+            if ((ctx.argument === 'object' && item.constructor !== Object) ||
+                (typeof item !== ctx.argument && ctx.argument !== 'object')) {
+                errors[index] = ctx.errorMessage.expectedType(ctx.argument);
+                continue;
+            }
+            const rules = ctx.rules['$' + ctx.field];
+            if (rules) {
+                const itemIsObject = item.constructor === Object;
+                const body = itemIsObject ? item : { data: item };
+                const _rules = itemIsObject ? rules : { data: rules };
+                const _errors = await (0, index_1.default)(body, _rules, ctx.options);
+                if (_errors) {
+                    errors[index] = itemIsObject ? _errors : _errors.data;
+                }
+            }
+        }
+        if (!_.isEmpty(errors)) {
+            return errors;
+        }
     }
-
-    if (!_.isEmpty(errors)) {
-      return errors
-    }
-  }
-}
+};

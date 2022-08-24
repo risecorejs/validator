@@ -1,5 +1,6 @@
-module.exports = ({ value, errorMessage }) => {
-  if (typeof value !== 'boolean') {
-    return errorMessage
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    if (typeof ctx.value !== 'boolean') {
+        return ctx.errorMessage;
+    }
+};

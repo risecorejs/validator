@@ -1,5 +1,6 @@
-module.exports = ({ value, errorMessage }) => {
-  if (typeof value !== 'number') {
-    return errorMessage
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    if (typeof ctx.value !== 'number') {
+        return ctx.errorMessage;
+    }
+};
