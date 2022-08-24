@@ -22,7 +22,6 @@
   "email": "entities/email",
   "tel": "entities/tel",
   
-  
   "array": "types/array",
   "boolean": "types/boolean",
   "number": "types/number",
