@@ -1,5 +1,6 @@
-module.exports = ({ value, body, argument, errorMessage, field }) => {
-  if (value !== body[argument]) {
-    return errorMessage(field, argument)
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    if (ctx.value !== ctx.body[ctx.argument]) {
+        return ctx.errorMessage(ctx.field, ctx.argument);
+    }
+};

@@ -2,6 +2,8 @@ import { IRuleContext } from '../interfaces'
 
 export type TRuleHandler = (ctx: IRuleContext) => Promise<any>
 
+export type TDialects = 'mysql' | 'postgres'
+
 export type TRuleNamesWithErrorMessage =
   | 'find'
   | 'findRaw'

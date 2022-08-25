@@ -1,25 +1,25 @@
-const validator = require('../../index')
-
-module.exports = async ({ argument, body, rawRules, options }) => {
-  const keys = Array.isArray(argument) ? argument : argument.split(',').map((key) => key.trim())
-
-  const _body = {}
-  const _rawRules = {}
-
-  for (const key of keys) {
-    _body[key] = body[key]
-    _rawRules[key] = rawRules[key]
-
-    for (const field in rawRules) {
-      if (rawRules.hasOwnProperty(field) && field.startsWith('$' + key)) {
-        _rawRules[field] = rawRules[field]
-      }
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+const index_1 = __importDefault(require("../../index"));
+module.exports = async function (ctx) {
+    const fields = Array.isArray(ctx.argument)
+        ? ctx.argument
+        : ctx.argument.split(',').map((field) => field.trim());
+    const body = {};
+    const rules = {};
+    for (const field of fields) {
+        body[field] = ctx.body[field];
+        rules[field] = ctx.rules[field];
+        for (const _field in ctx.rules) {
+            if (ctx.rules.hasOwnProperty(_field) && _field.startsWith('$' + field)) {
+                rules[_field] = ctx.rules[_field];
+            }
+        }
     }
-  }
-
-  const errors = await validator(_body, _rawRules, options)
-
-  if (errors) {
-    return errors
-  }
-}
+    const errors = await (0, index_1.default)(body, rules, ctx.options);
+    if (errors) {
+        return errors;
+    }
+};

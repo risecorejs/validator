@@ -1,50 +1,39 @@
-const _ = require('lodash')
-
-module.exports = ({ argument: condition, body, value, errorMessage }) => {
-  const required = condition ? getRequired(condition, body) : true
-
-  if (required) {
-    if (typeof value === 'string') {
-      value = value.trim()
-    }
-
-    if (
-      value === void 0 ||
-      value === null ||
-      value.length === 0 ||
-      (value.constructor === Object && _.isEmpty(value))
-    ) {
-      return errorMessage
-    }
-  }
-}
-
+"use strict";
+const _ = require('lodash');
 /**
  * GET-REQUIRED
- * @param condition {string}
- * @param body {Object}
+ * @param ctx {IRuleContext}
  * @return {boolean}
  */
-function getRequired(condition, body) {
-  const operators = {
-    '>=': (left, right) => left >= right,
-    '>': (left, right) => left > right,
-
-    '<=': (left, right) => left <= right,
-    '<': (left, right) => left < right,
-
-    '!==': (left, right) => left !== right,
-    '!=': (left, right) => left != right,
-
-    '===': (left, right) => left === right,
-    '==': (left, right) => left == right
-  }
-
-  for (const [operator, handler] of Object.entries(operators)) {
-    if (condition.includes(operator)) {
-      const [key, value] = condition.split(operator)
-
-      return handler(body[key], eval(value))
+function getRequired(ctx) {
+    const operators = {
+        '>=': (left, right) => left >= right,
+        '>': (left, right) => left > right,
+        '<=': (left, right) => left <= right,
+        '<': (left, right) => left < right,
+        '!==': (left, right) => left !== right,
+        '!=': (left, right) => left != right,
+        '===': (left, right) => left === right,
+        '==': (left, right) => left == right
+    };
+    for (const [operator, handler] of Object.entries(operators)) {
+        if (ctx.argument.includes(operator)) {
+            const [key, value] = ctx.argument.split(operator);
+            return handler(ctx.body[key], eval(value));
+        }
     }
-  }
 }
+module.exports = function (ctx) {
+    const required = ctx.argument ? getRequired(ctx) : true;
+    if (required) {
+        if (typeof ctx.value === 'string') {
+            ctx.value = ctx.value.trim();
+        }
+        if (ctx.value === void 0 ||
+            ctx.value === null ||
+            ctx.value.length === 0 ||
+            (ctx.value.constructor === Object && _.isEmpty(ctx.value))) {
+            return ctx.errorMessage;
+        }
+    }
+};

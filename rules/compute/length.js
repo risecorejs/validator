@@ -1,5 +1,6 @@
-module.exports = ({ value, argument: length, errorMessage }) => {
-  if (value.length !== +length) {
-    return errorMessage(length)
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    if (ctx.value.length !== +ctx.argument) {
+        return ctx.errorMessage(ctx.argument);
+    }
+};

@@ -1,7 +1,7 @@
-module.exports = ({ argument, value, errorMessage }) => {
-  const values = Array.isArray(argument) ? argument : argument.split(',').map((value) => eval(value))
-
-  if (!values.includes(value)) {
-    return errorMessage(values)
-  }
-}
+"use strict";
+module.exports = function (ctx) {
+    const values = Array.isArray(ctx.argument) ? ctx.argument : ctx.argument.split(',').map((value) => eval(value));
+    if (!values.includes(ctx.value)) {
+        return ctx.errorMessage(values);
+    }
+};

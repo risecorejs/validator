@@ -1,9 +1,9 @@
-module.exports = async ({ options: { sequelize }, argument: query, errorMessage }) => {
-  if (sequelize) {
-    const [result] = await sequelize.query(query)
-
-    if (!result[0]) {
-      return errorMessage
+"use strict";
+module.exports = async function (ctx) {
+    if (ctx.options.sequelize) {
+        const [result] = await ctx.options.sequelize.query(ctx.argument);
+        if (!result[0]) {
+            return ctx.errorMessage;
+        }
     }
-  }
-}
+};

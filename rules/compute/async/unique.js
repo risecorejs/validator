@@ -1,31 +1,27 @@
-module.exports = async ({ options: { sequelize }, argument, field, value, errorMessage }) => {
-  if (sequelize) {
-    const [table, tableColumn] = Array.isArray(argument) ? argument : argument.split('-')
-
-    const query = getQuery(sequelize.dialect.sequelize.options.dialect, table, tableColumn || field, value)
-
-    const [result] = await sequelize.query(query)
-
-    if (result[0]) {
-      return errorMessage
-    }
-  }
-}
-
+"use strict";
 /**
  * GET-QUERY
- * @param dialect {string}
+ * @param dialect {TDialects}
  * @param table {string}
- * @param tableColumn {string}
+ * @param column {string}
  * @param value {any}
  * @return {string}
  */
-function getQuery(dialect, table, tableColumn, value) {
-  switch (dialect) {
-    case 'mysql':
-      return `SELECT \`${tableColumn}\` FROM \`${table}\` WHERE \`${tableColumn}\` = '${value}' LIMIT 1`
-
-    case 'postgres':
-      return `SELECT "${tableColumn}" FROM "${table}" WHERE "${tableColumn}" = '${value}' LIMIT 1`
-  }
+function getQuery(dialect, table, column, value) {
+    switch (dialect) {
+        case 'mysql':
+            return `SELECT \`${column}\` FROM \`${table}\` WHERE \`${column}\` = '${value}' LIMIT 1`;
+        case 'postgres':
+            return `SELECT "${column}" FROM "${table}" WHERE "${column}" = '${value}' LIMIT 1`;
+    }
 }
+module.exports = async function (ctx) {
+    if (ctx.options.sequelize) {
+        const [table, column] = Array.isArray(ctx.argument) ? ctx.argument : ctx.argument.split('-');
+        const query = getQuery(ctx.options.sequelize.getDialect(), table, column || ctx.field, ctx.value);
+        const [result] = await ctx.options.sequelize.query(query);
+        if (result[0]) {
+            return ctx.errorMessage;
+        }
+    }
+};
