@@ -1,6 +1,6 @@
 import { IRuleContext } from '../../interfaces'
 
-export = function (ctx: IRuleContext): string | void {
+export default function (ctx: IRuleContext): string | void {
   const [leftNum, rightNum] = Array.isArray(ctx.argument) ? ctx.argument : ctx.argument.split('-')
 
   if (!['string', 'number'].includes(typeof ctx.value) && !Array.isArray(ctx.value)) {

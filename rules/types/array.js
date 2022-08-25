@@ -2,9 +2,10 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require('lodash');
 const index_1 = __importDefault(require("../../index"));
-module.exports = async function (ctx) {
+async function default_1(ctx) {
     if (!Array.isArray(ctx.value)) {
         return ctx.errorMessage.main;
     }
@@ -34,4 +35,5 @@ module.exports = async function (ctx) {
             return errors;
         }
     }
-};
+}
+exports.default = default_1;

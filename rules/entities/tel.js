@@ -1,6 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const lpn = require('libphonenumber-js');
-module.exports = function (ctx) {
+function default_1(ctx) {
     if (typeof ctx.value !== 'string') {
         return ctx.errorMessage.typeError;
     }
@@ -11,4 +12,5 @@ module.exports = function (ctx) {
     if (ctx.argument && tel.country !== ctx.argument) {
         return ctx.errorMessage.countryCode;
     }
-};
+}
+exports.default = default_1;

@@ -2,7 +2,7 @@ import { IRuleContext } from '../../interfaces'
 
 const _ = require('lodash')
 
-export = function (ctx: IRuleContext): string | void {
+export default function (ctx: IRuleContext): string | void {
   const required = ctx.argument ? getRequired(ctx) : true
 
   if (required) {

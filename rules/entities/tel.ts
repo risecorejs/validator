@@ -2,7 +2,7 @@ const lpn = require('libphonenumber-js')
 
 import { IRuleContext } from '../../interfaces'
 
-export = function (ctx: IRuleContext): string | void {
+export default function (ctx: IRuleContext): string | void {
   if (typeof ctx.value !== 'string') {
     return <string>ctx.errorMessage.typeError
   }

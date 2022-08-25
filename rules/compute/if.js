@@ -1,5 +1,6 @@
 "use strict";
-module.exports = function (ctx) {
+Object.defineProperty(exports, "__esModule", { value: true });
+function default_1(ctx) {
     const operators = {
         '>=': (left, right) => left >= right,
         '>': (left, right) => left > right,
@@ -20,4 +21,5 @@ module.exports = function (ctx) {
             break;
         }
     }
-};
+}
+exports.default = default_1;

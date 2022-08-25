@@ -2,7 +2,7 @@ import { IFields, IRuleContext, IRules } from '../../interfaces'
 
 import validator from '../../index'
 
-export = async function (ctx: IRuleContext): Promise<string | IFields | void> {
+export default async function (ctx: IRuleContext): Promise<string | IFields | void> {
   const fields = Array.isArray(ctx.argument)
     ? ctx.argument
     : ctx.argument.split(',').map((field: string) => field.trim())

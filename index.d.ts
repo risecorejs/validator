@@ -1,5 +1,4 @@
 import { IFields, IOptions, IRules } from './interfaces';
-export = main;
 /**
  * VALIDATOR
  * @param body {IFields}
@@ -7,4 +6,4 @@ export = main;
  * @param options {IOptions}
  * @return {Promise<null | IFields>}
  */
-declare function main(body: IFields, rules: IRules, options?: IOptions): Promise<null | IFields>;
+export default function main(body: IFields, rules: IRules, options?: IOptions): Promise<null | IFields>;

@@ -1,6 +1,6 @@
 import { IRuleContext } from '../../interfaces'
 
-export = function (ctx: IRuleContext): string | void {
+export default function (ctx: IRuleContext): string | void {
   const operators = {
     '>=': (left: any, right: any): boolean => left >= right,
     '>': (left: any, right: any): boolean => left > right,

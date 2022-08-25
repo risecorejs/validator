@@ -2,8 +2,10 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = __importDefault(require("lodash"));
-const config_json_1 = __importDefault(require("./rules/config.json"));
+const error_messages_1 = __importDefault(require("./error-messages"));
+const rules_1 = __importDefault(require("./rules"));
 /**
  * VALIDATOR
  * @param body {IFields}
@@ -15,7 +17,7 @@ async function main(body, rules, options) {
     options ||= {};
     options.locale ||= 'en';
     options.sequelize ||= null;
-    const errorMessages = require('./error-messages/' + options.locale);
+    const errorMessages = error_messages_1.default[options.locale];
     const errors = {};
     for (const formattedRulesRow of getFormattedRulesRows(rules)) {
         for (const rule of formattedRulesRow.rules) {
@@ -28,6 +30,7 @@ async function main(body, rules, options) {
             };
             // IS-STRING
             if (typeof rule === 'string') {
+                // @ts-ignore
                 ruleContext.errorMessage = errorMessages[rule];
                 const message = await executor(rule, ruleContext);
                 if (message) {
@@ -49,6 +52,7 @@ async function main(body, rules, options) {
             }
             // IS-OBJECT
             else if (rule.constructor === Object) {
+                // @ts-ignore
                 ruleContext.errorMessage = errorMessages[rule.name];
                 ruleContext.argument = rule.argument;
                 const message = await executor(rule.name, ruleContext);
@@ -63,6 +67,7 @@ async function main(body, rules, options) {
     }
     return lodash_1.default.isEmpty(errors) ? null : errors;
 }
+exports.default = main;
 /**
  * GET-FORMATTED-RULES-ROWS
  * @param rules {IRules}
@@ -142,16 +147,14 @@ function getFormattedRulesRows(rules) {
  * EXECUTOR
  * @param ruleName {TRuleNames}
  * @param ruleContext {IRuleContext}
- * @returns {Promise<any> | string}
+ * @returns {string | void | Promise<string | void> | Promise<string | IFields | void>}
  */
 function executor(ruleName, ruleContext) {
     try {
-        const ruleHandler = require('./rules/' + config_json_1.default[ruleName]);
-        return ruleHandler(ruleContext);
+        return rules_1.default[ruleName](ruleContext);
     }
     catch (err) {
         console.error(err);
         return err.message;
     }
 }
-module.exports = main;

@@ -1,5 +1,6 @@
 "use strict";
-module.exports = function (ctx) {
+Object.defineProperty(exports, "__esModule", { value: true });
+function default_1(ctx) {
     if (!['string', 'number'].includes(typeof ctx.value) && !Array.isArray(ctx.value)) {
         return ctx.errorMessage.typeError;
     }
@@ -8,4 +9,5 @@ module.exports = function (ctx) {
         (Array.isArray(ctx.value) && ctx.value.length <= ctx.argument))) {
         return ctx.errorMessage.main(ctx.argument);
     }
-};
+}
+exports.default = default_1;

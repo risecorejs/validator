@@ -1,11 +1,10 @@
 import _ from 'lodash'
 
 import { IErrorMessages, IFields, IFormattedRuleRow, IOptions, IRules, IRuleContext } from './interfaces'
-import { TRuleHandler, TRuleNames, TRuleNamesWithErrorMessage } from './types'
+import { TRuleNames } from './types'
 
-import rulesConfig from './rules/config.json'
-
-export = main
+import $errorMessages from './error-messages'
+import $rules from './rules'
 
 /**
  * VALIDATOR
@@ -14,12 +13,12 @@ export = main
  * @param options {IOptions}
  * @return {Promise<null | IFields>}
  */
-async function main(body: IFields, rules: IRules, options?: IOptions): Promise<null | IFields> {
+export default async function main(body: IFields, rules: IRules, options?: IOptions): Promise<null | IFields> {
   options ||= {}
   options.locale ||= 'en'
   options.sequelize ||= null
 
-  const errorMessages: IErrorMessages = require('./error-messages/' + options.locale)
+  const errorMessages: IErrorMessages = $errorMessages[options.locale]
 
   const errors: IFields = {}
 
@@ -35,6 +34,7 @@ async function main(body: IFields, rules: IRules, options?: IOptions): Promise<n
 
       // IS-STRING
       if (typeof rule === 'string') {
+        // @ts-ignore
         ruleContext.errorMessage = errorMessages[rule]
 
         const message = await executor(rule, ruleContext)
@@ -63,6 +63,7 @@ async function main(body: IFields, rules: IRules, options?: IOptions): Promise<n
 
       // IS-OBJECT
       else if (rule.constructor === Object) {
+        // @ts-ignore
         ruleContext.errorMessage = errorMessages[rule.name]
         ruleContext.argument = rule.argument
 
@@ -106,11 +107,11 @@ function getFormattedRulesRows(rules: IRules): IFormattedRuleRow[] {
             const [name, argument] = rule.split(':')
 
             formattedRuleRow.rules.push({
-              name: <TRuleNamesWithErrorMessage>name,
+              name: <TRuleNames>name,
               argument
             })
           } else {
-            formattedRuleRow.rules.push(<TRuleNamesWithErrorMessage>rule)
+            formattedRuleRow.rules.push(<TRuleNames>rule)
           }
         }
       }
@@ -130,11 +131,11 @@ function getFormattedRulesRows(rules: IRules): IFormattedRuleRow[] {
                 const [name, argument] = rule.split(':')
 
                 formattedRuleRow.rules.push({
-                  name: <TRuleNamesWithErrorMessage>name,
+                  name: <TRuleNames>name,
                   argument
                 })
               } else {
-                formattedRuleRow.rules.push(<TRuleNamesWithErrorMessage>rule)
+                formattedRuleRow.rules.push(<TRuleNames>rule)
               }
             }
           }
@@ -149,7 +150,7 @@ function getFormattedRulesRows(rules: IRules): IFormattedRuleRow[] {
             const [ruleName, ruleArgument] = __rules
 
             formattedRuleRow.rules.push({
-              name: <TRuleNamesWithErrorMessage>ruleName,
+              name: <TRuleNames>ruleName,
               argument: ruleArgument
             })
           }
@@ -174,13 +175,14 @@ function getFormattedRulesRows(rules: IRules): IFormattedRuleRow[] {
  * EXECUTOR
  * @param ruleName {TRuleNames}
  * @param ruleContext {IRuleContext}
- * @returns {Promise<any> | string}
+ * @returns {string | void | Promise<string | void> | Promise<string | IFields | void>}
  */
-function executor(ruleName: TRuleNames, ruleContext: IRuleContext): Promise<any> | string {
+function executor(
+  ruleName: TRuleNames,
+  ruleContext: IRuleContext
+): string | void | Promise<string | void> | Promise<string | IFields | void> {
   try {
-    const ruleHandler = <TRuleHandler>require('./rules/' + rulesConfig[ruleName])
-
-    return ruleHandler(ruleContext)
+    return $rules[ruleName](ruleContext)
   } catch (err) {
     console.error(err)
 

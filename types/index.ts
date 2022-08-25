@@ -1,28 +1,4 @@
-import { IRuleContext } from '../interfaces'
-
-export type TRuleHandler = (ctx: IRuleContext) => Promise<any>
-
 export type TDialects = 'mysql' | 'postgres'
-
-export type TRuleNamesWithErrorMessage =
-  | 'find'
-  | 'findRaw'
-  | 'unique'
-  | 'as'
-  | 'between'
-  | 'length'
-  | 'max'
-  | 'min'
-  | 'only'
-  | 'required'
-  | 'date'
-  | 'email'
-  | 'tel'
-  | 'array'
-  | 'boolean'
-  | 'number'
-  | 'object'
-  | 'string'
 
 export type TRuleNames =
   | 'allowEmpty'

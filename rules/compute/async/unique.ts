@@ -3,14 +3,14 @@ import { TDialects } from '../../../types/index'
 
 export default async function (ctx: IRuleContext): Promise<string | void> {
   if (ctx.options.sequelize) {
-    const [table, column] = <[string, string]>(Array.isArray(ctx.argument) ? ctx.argument : ctx.argument.split('-'))
+    const [table, column] = Array.isArray(ctx.argument) ? ctx.argument : ctx.argument.split('-')
 
-    const query = getQuery(<TDialects>ctx.options.sequelize.getDialect(), table, column, ctx.value)
+    const query = getQuery(<TDialects>ctx.options.sequelize.getDialect(), table, column || ctx.field, ctx.value)
 
     const [result] = await ctx.options.sequelize.query(query)
 
-    if (!result[0]) {
-      return <string>ctx.errorMessage(table)
+    if (result[0]) {
+      return <string>ctx.errorMessage
     }
   }
 }

@@ -4,7 +4,7 @@ import validator from '../../index'
 
 import { IFields, IRuleContext, IRules } from '../../interfaces'
 
-export = async function (ctx: IRuleContext): Promise<string | IFields | void> {
+export default async function (ctx: IRuleContext): Promise<string | IFields | void> {
   if (!Array.isArray(ctx.value)) {
     return <string>ctx.errorMessage.main
   }

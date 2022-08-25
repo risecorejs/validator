@@ -2,7 +2,7 @@ import { IFields, IRuleContext, IRules } from '../../interfaces'
 
 import validator from '../../index'
 
-export = async function (ctx: IRuleContext): Promise<string | IFields | void> {
+export default async function (ctx: IRuleContext): Promise<string | IFields | void> {
   if (ctx.value?.constructor !== Object) {
     return <string>ctx.errorMessage
   }

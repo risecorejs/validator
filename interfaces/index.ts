@@ -1,6 +1,6 @@
 import sequelize from 'sequelize'
 
-import { TRuleNamesWithErrorMessage } from '../types'
+import { TRuleNames } from '../types'
 
 export interface IOptions {
   locale?: 'ru' | 'en'
@@ -13,11 +13,7 @@ export interface IFields {
 
 export interface IFormattedRuleRow {
   field: string
-  rules: (
-    | TRuleNamesWithErrorMessage
-    | ((ctx: IRuleContext) => any)
-    | { name: TRuleNamesWithErrorMessage; argument: string }
-  )[]
+  rules: (TRuleNames | ((ctx: IRuleContext) => any) | { name: TRuleNames; argument: string })[]
 }
 
 export interface IRuleContext {

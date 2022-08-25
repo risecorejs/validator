@@ -2,8 +2,9 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../index"));
-module.exports = async function (ctx) {
+async function default_1(ctx) {
     const fields = Array.isArray(ctx.argument)
         ? ctx.argument
         : ctx.argument.split(',').map((field) => field.trim());
@@ -22,4 +23,5 @@ module.exports = async function (ctx) {
     if (errors) {
         return errors;
     }
-};
+}
+exports.default = default_1;
