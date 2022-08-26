@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
-import { IErrorMessages, IFields, IFormattedRuleRow, IOptions, IRules, IRuleContext } from './interfaces'
-import { TRuleNames } from './types'
+import { IErrorMessages, IFields, IFormattedRuleRow, IOptions, IRules, IRuleContext, IRuleHandler } from './interfaces'
+import { TRuleHandler, TRuleNames } from './types'
 
 import $errorMessages from './error-messages'
 import $rules from './rules'
@@ -13,7 +13,7 @@ import $rules from './rules'
  * @param options {IOptions}
  * @return {Promise<null | IFields>}
  */
-export default async function main(body: IFields, rules: IRules, options?: IOptions): Promise<null | IFields> {
+export default async function (body: IFields, rules: IRules, options?: IOptions): Promise<null | IFields> {
   options ||= {}
   options.locale ||= 'en'
   options.sequelize ||= null
@@ -50,7 +50,7 @@ export default async function main(body: IFields, rules: IRules, options?: IOpti
 
       // IS-FUNCTION
       else if (typeof rule === 'function') {
-        const result = await rule(ruleContext)
+        const result = await executor(rule, ruleContext)
 
         if (result) {
           if (result !== 'break') {
@@ -173,19 +173,22 @@ function getFormattedRulesRows(rules: IRules): IFormattedRuleRow[] {
 
 /**
  * EXECUTOR
- * @param ruleName {TRuleNames}
+ * @param ruleNameOrRuleHandler {TRuleNames | IRuleHandler}
  * @param ruleContext {IRuleContext}
- * @returns {string | void | Promise<string | void> | Promise<string | IFields | void>}
+ * @returns {TRuleHandler}
  */
-function executor(
-  ruleName: TRuleNames,
-  ruleContext: IRuleContext
-): string | void | Promise<string | void> | Promise<string | IFields | void> {
+function executor(ruleNameOrRuleHandler: TRuleNames | IRuleHandler, ruleContext: IRuleContext): TRuleHandler {
   try {
-    return $rules[ruleName](ruleContext)
+    if (typeof ruleNameOrRuleHandler === 'string') {
+      return $rules[ruleNameOrRuleHandler](ruleContext)
+    } else {
+      return ruleNameOrRuleHandler(ruleContext)
+    }
   } catch (err) {
-    console.error(err)
-
-    return err.message
+    if (typeof err?.message === 'string') {
+      return err.message
+    } else {
+      return 'Unknown error'
+    }
   }
 }

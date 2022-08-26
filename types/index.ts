@@ -1,4 +1,8 @@
+import { IFields, IRuleContext } from '../interfaces'
+
 export type TDialects = 'mysql' | 'postgres'
+
+export type TRuleHandler = string | void | Promise<string | void> | Promise<string | IFields | void>
 
 export type TRuleNames =
   | 'allowEmpty'

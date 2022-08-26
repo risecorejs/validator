@@ -13,7 +13,7 @@ const rules_1 = __importDefault(require("./rules"));
  * @param options {IOptions}
  * @return {Promise<null | IFields>}
  */
-async function main(body, rules, options) {
+async function default_1(body, rules, options) {
     options ||= {};
     options.locale ||= 'en';
     options.sequelize ||= null;
@@ -42,7 +42,7 @@ async function main(body, rules, options) {
             }
             // IS-FUNCTION
             else if (typeof rule === 'function') {
-                const result = await rule(ruleContext);
+                const result = await executor(rule, ruleContext);
                 if (result) {
                     if (result !== 'break') {
                         errors[formattedRulesRow.field] = result;
@@ -67,7 +67,7 @@ async function main(body, rules, options) {
     }
     return lodash_1.default.isEmpty(errors) ? null : errors;
 }
-exports.default = main;
+exports.default = default_1;
 /**
  * GET-FORMATTED-RULES-ROWS
  * @param rules {IRules}
@@ -145,16 +145,25 @@ function getFormattedRulesRows(rules) {
 }
 /**
  * EXECUTOR
- * @param ruleName {TRuleNames}
+ * @param ruleNameOrRuleHandler {TRuleNames | IRuleHandler}
  * @param ruleContext {IRuleContext}
- * @returns {string | void | Promise<string | void> | Promise<string | IFields | void>}
+ * @returns {TRuleHandler}
  */
-function executor(ruleName, ruleContext) {
+function executor(ruleNameOrRuleHandler, ruleContext) {
     try {
-        return rules_1.default[ruleName](ruleContext);
+        if (typeof ruleNameOrRuleHandler === 'string') {
+            return rules_1.default[ruleNameOrRuleHandler](ruleContext);
+        }
+        else {
+            return ruleNameOrRuleHandler(ruleContext);
+        }
     }
     catch (err) {
-        console.error(err);
-        return err.message;
+        if (typeof err?.message === 'string') {
+            return err.message;
+        }
+        else {
+            return 'Unknown error';
+        }
     }
 }

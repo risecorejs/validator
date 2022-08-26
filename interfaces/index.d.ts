@@ -1,15 +1,16 @@
 import sequelize from 'sequelize';
-import { TRuleNames } from '../types';
+import { TRuleHandler, TRuleNames } from '../types';
 export interface IOptions {
     locale?: 'ru' | 'en';
     sequelize?: sequelize.Sequelize | null;
 }
+export declare type IRuleHandler = (ctx: IRuleContext) => TRuleHandler;
 export interface IFields {
     [id: string]: any;
 }
 export interface IFormattedRuleRow {
     field: string;
-    rules: (TRuleNames | ((ctx: IRuleContext) => any) | {
+    rules: (TRuleNames | IRuleHandler | {
         name: TRuleNames;
         argument: string;
     })[];
@@ -24,7 +25,7 @@ export interface IRuleContext {
     argument?: any;
 }
 export interface IRules {
-    [key: string]: string | ((ctx: IRuleContext) => any) | (string | [string, any] | ((ctx: IRuleContext) => any))[] | IRules;
+    [key: string]: string | IRuleHandler | (string | [string, any] | ((ctx: IRuleContext) => any))[] | IRules;
 }
 export interface IErrorMessageBetween {
     typeError: string;

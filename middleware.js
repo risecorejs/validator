@@ -9,10 +9,10 @@ const index_1 = __importDefault(require("./index"));
  * @param options {IOptions}
  * @return {express.Handler}
  */
-function main(options) {
+function default_1(options) {
     return function (req, res, next) {
         req.validator = (rules) => (0, index_1.default)(req.body, rules, options);
         next();
     };
 }
-exports.default = main;
+exports.default = default_1;
