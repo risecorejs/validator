@@ -14,6 +14,5 @@ module.exports = {
   max: require('./compute/max'),
   min: require('./compute/min'),
   only: require('./compute/only'),
-  required: require('./compute/required'),
-  'required:key[condition]value': require('./compute/required-if')
+  required: require('./compute/required')
 }
