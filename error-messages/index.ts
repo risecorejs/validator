@@ -1,4 +1,7 @@
 import en from './en'
 import ru from './ru'
 
-export default { en, ru }
+export default new Map([
+  ['en', en],
+  ['ru', ru]
+])

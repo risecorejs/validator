@@ -10,7 +10,7 @@ export interface IOptions {
 export type IRuleHandler = (ctx: IRuleContext) => TRuleHandler
 
 export interface IFields {
-  [id: string]: any
+  [key: string]: any
 }
 
 export interface IFormattedRuleRow {

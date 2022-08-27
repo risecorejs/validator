@@ -6,7 +6,7 @@ export interface IOptions {
 }
 export declare type IRuleHandler = (ctx: IRuleContext) => TRuleHandler;
 export interface IFields {
-    [id: string]: any;
+    [key: string]: any;
 }
 export interface IFormattedRuleRow {
     field: string;

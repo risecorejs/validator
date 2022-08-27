@@ -3,8 +3,8 @@ import _ from 'lodash'
 import { IErrorMessages, IFields, IFormattedRuleRow, IOptions, IRules, IRuleContext, IRuleHandler } from './interfaces'
 import { TRuleHandler, TRuleNames } from './types'
 
-import $errorMessages from './error-messages'
-import $rules from './rules'
+import errorMessagesByLocale from './error-messages'
+import ruleHandlers from './rules'
 
 /**
  * VALIDATOR
@@ -18,7 +18,7 @@ export default async function (body: IFields, rules: IRules, options?: IOptions)
   options.locale ||= 'en'
   options.sequelize ||= null
 
-  const errorMessages: IErrorMessages = $errorMessages[options.locale]
+  const errorMessages: IErrorMessages = <IErrorMessages>errorMessagesByLocale.get(options.locale)
 
   const errors: IFields = {}
 
@@ -180,7 +180,7 @@ function getFormattedRulesRows(rules: IRules): IFormattedRuleRow[] {
 function executor(ruleNameOrRuleHandler: TRuleNames | IRuleHandler, ruleContext: IRuleContext): TRuleHandler {
   try {
     if (typeof ruleNameOrRuleHandler === 'string') {
-      return $rules[ruleNameOrRuleHandler](ruleContext)
+      return ruleHandlers[ruleNameOrRuleHandler](ruleContext)
     } else {
       return ruleNameOrRuleHandler(ruleContext)
     }
