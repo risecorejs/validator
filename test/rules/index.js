@@ -7,5 +7,7 @@ module.exports = {
   ifExists: require('./break/if-exists'),
 
   // COMPUTE
-  as: require('./compute/as')
+  as: require('./compute/as'),
+  between: require('./compute/between'),
+  if: require('./compute/if')
 }
