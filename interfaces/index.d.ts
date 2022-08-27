@@ -50,7 +50,7 @@ export interface IErrorMessageArray {
     typeNotSupported: string;
     expectedType: (type: string) => string;
 }
-export interface IErrorMessages {
+export interface IErrorMessages extends IFields {
     find: (table: string) => string;
     findRaw: string;
     unique: string;
