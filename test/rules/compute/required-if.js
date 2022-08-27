@@ -43,7 +43,7 @@ module.exports = function () {
       },
       '>': {
         number: [['required', '_string>"122"']],
-        string: [['if', '_number>2']]
+        string: [['required', '_number>2']]
       },
       '<=': {
         number: [['required', '_string<="123"']],
