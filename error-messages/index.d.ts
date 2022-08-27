@@ -1,5 +1,3 @@
-declare const _default: {
-    en: import("../interfaces").IErrorMessages;
-    ru: import("../interfaces").IErrorMessages;
-};
+import { IErrorMessages } from '../interfaces';
+declare const _default: Map<string, IErrorMessages>;
 export default _default;

@@ -4,7 +4,7 @@ import { IErrorMessages, IFields, IFormattedRuleRow, IOptions, IRules, IRuleCont
 import { TRuleHandler, TRuleNames } from './types'
 
 import errorMessagesByLocale from './error-messages'
-import ruleHandlers from './rules'
+import ruleHandlersByName from './rules'
 
 /**
  * VALIDATOR
@@ -14,9 +14,17 @@ import ruleHandlers from './rules'
  * @return {Promise<null | IFields>}
  */
 export default async function (body: IFields, rules: IRules, options?: IOptions): Promise<null | IFields> {
+  const defaultLocale = 'en'
+
   options ||= {}
-  options.locale ||= 'en'
+  options.locale ||= defaultLocale
   options.sequelize ||= null
+
+  if (!errorMessagesByLocale.has(options.locale)) {
+    console.log(`Locale [${options.locale}] not found. Default is [en]`)
+
+    options.locale = defaultLocale
+  }
 
   const errorMessages: IErrorMessages = <IErrorMessages>errorMessagesByLocale.get(options.locale)
 
@@ -179,10 +187,18 @@ function getFormattedRulesRows(rules: IRules): IFormattedRuleRow[] {
  */
 function executor(ruleNameOrRuleHandler: TRuleNames | IRuleHandler, ruleContext: IRuleContext): TRuleHandler {
   try {
-    if (typeof ruleNameOrRuleHandler === 'string') {
-      return ruleHandlers[ruleNameOrRuleHandler](ruleContext)
-    } else {
-      return ruleNameOrRuleHandler(ruleContext)
+    switch (typeof ruleNameOrRuleHandler) {
+      case 'string': {
+        if (ruleHandlersByName.has(ruleNameOrRuleHandler)) {
+          return (<IRuleHandler>ruleHandlersByName.get(ruleNameOrRuleHandler))(ruleContext)
+        } else {
+          return `Rule [${ruleNameOrRuleHandler}] not found`
+        }
+      }
+
+      case 'function': {
+        return ruleNameOrRuleHandler(ruleContext)
+      }
     }
   } catch (err) {
     if (typeof err?.message === 'string') {

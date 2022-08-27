@@ -14,10 +14,15 @@ const rules_1 = __importDefault(require("./rules"));
  * @return {Promise<null | IFields>}
  */
 async function default_1(body, rules, options) {
+    const defaultLocale = 'en';
     options ||= {};
-    options.locale ||= 'en';
+    options.locale ||= defaultLocale;
     options.sequelize ||= null;
-    const errorMessages = error_messages_1.default[options.locale];
+    if (!error_messages_1.default.has(options.locale)) {
+        console.log(`Locale [${options.locale}] not found. Default is [en]`);
+        options.locale = defaultLocale;
+    }
+    const errorMessages = error_messages_1.default.get(options.locale);
     const errors = {};
     for (const formattedRulesRow of getFormattedRulesRows(rules)) {
         for (const rule of formattedRulesRow.rules) {
@@ -151,11 +156,18 @@ function getFormattedRulesRows(rules) {
  */
 function executor(ruleNameOrRuleHandler, ruleContext) {
     try {
-        if (typeof ruleNameOrRuleHandler === 'string') {
-            return rules_1.default[ruleNameOrRuleHandler](ruleContext);
-        }
-        else {
-            return ruleNameOrRuleHandler(ruleContext);
+        switch (typeof ruleNameOrRuleHandler) {
+            case 'string': {
+                if (rules_1.default.has(ruleNameOrRuleHandler)) {
+                    return rules_1.default.get(ruleNameOrRuleHandler)(ruleContext);
+                }
+                else {
+                    return `Rule [${ruleNameOrRuleHandler}] not found`;
+                }
+            }
+            case 'function': {
+                return ruleNameOrRuleHandler(ruleContext);
+            }
         }
     }
     catch (err) {

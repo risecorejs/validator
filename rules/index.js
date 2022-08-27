@@ -32,34 +32,34 @@ const boolean_1 = __importDefault(require("./types/boolean"));
 const number_1 = __importDefault(require("./types/number"));
 const object_1 = __importDefault(require("./types/object"));
 const string_1 = __importDefault(require("./types/string"));
-exports.default = {
+exports.default = new Map([
     // BREAK
-    allowEmpty: allow_empty_1.default,
-    allowFalse: allow_false_1.default,
-    allowNull: allow_null_1.default,
-    allowZero: allow_zero_1.default,
-    ifExists: if_exists_1.default,
+    ['allowEmpty', allow_empty_1.default],
+    ['allowFalse', allow_false_1.default],
+    ['allowNull', allow_null_1.default],
+    ['allowZero', allow_zero_1.default],
+    ['ifExists', if_exists_1.default],
     // COMPUTE
-    find: find_1.default,
-    findRaw: find_raw_1.default,
-    unique: unique_1.default,
-    as: as_1.default,
-    between: between_1.default,
-    if: if_1.default,
-    length: length_1.default,
-    max: max_1.default,
-    min: min_1.default,
-    only: only_1.default,
-    required: required_1.default,
-    validate: validate_1.default,
+    ['find', find_1.default],
+    ['findRaw', find_raw_1.default],
+    ['unique', unique_1.default],
+    ['as', as_1.default],
+    ['between', between_1.default],
+    ['if', if_1.default],
+    ['length', length_1.default],
+    ['max', max_1.default],
+    ['min', min_1.default],
+    ['only', only_1.default],
+    ['required', required_1.default],
+    ['validate', validate_1.default],
     // ENTITIES
-    date: date_1.default,
-    email: email_1.default,
-    tel: tel_1.default,
+    ['date', date_1.default],
+    ['email', email_1.default],
+    ['tel', tel_1.default],
     // TYPES
-    array: array_1.default,
-    boolean: boolean_1.default,
-    number: number_1.default,
-    object: object_1.default,
-    string: string_1.default
-};
+    ['array', array_1.default],
+    ['boolean', boolean_1.default],
+    ['number', number_1.default],
+    ['object', object_1.default],
+    ['string', string_1.default]
+]);

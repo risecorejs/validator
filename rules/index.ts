@@ -1,3 +1,5 @@
+import { IRuleHandler } from '../interfaces'
+
 // BREAK
 import allowEmpty from './break/allow-empty'
 import allowFalse from './break/allow-false'
@@ -31,37 +33,37 @@ import number from './types/number'
 import object from './types/object'
 import string from './types/string'
 
-export default {
+export default new Map<string, IRuleHandler>([
   // BREAK
-  allowEmpty,
-  allowFalse,
-  allowNull,
-  allowZero,
-  ifExists,
+  ['allowEmpty', allowEmpty],
+  ['allowFalse', allowFalse],
+  ['allowNull', allowNull],
+  ['allowZero', allowZero],
+  ['ifExists', ifExists],
 
   // COMPUTE
-  find,
-  findRaw,
-  unique,
-  as,
-  between,
-  if: _if,
-  length,
-  max,
-  min,
-  only,
-  required,
-  validate,
+  ['find', find],
+  ['findRaw', findRaw],
+  ['unique', unique],
+  ['as', as],
+  ['between', between],
+  ['if', _if],
+  ['length', length],
+  ['max', max],
+  ['min', min],
+  ['only', only],
+  ['required', required],
+  ['validate', validate],
 
   // ENTITIES
-  date,
-  email,
-  tel,
+  ['date', date],
+  ['email', email],
+  ['tel', tel],
 
   // TYPES
-  array,
-  boolean,
-  number,
-  object,
-  string
-}
+  ['array', array],
+  ['boolean', boolean],
+  ['number', number],
+  ['object', object],
+  ['string', string]
+])
