@@ -1,12 +1,16 @@
 const equal = require('deep-equal')
 
 module.exports = function () {
+  const rules = [
+    //
+    { test: 'min:1' },
+    { test: [['min', 1]] }
+  ]
+
   return [
     {
       body: [{ test: 3 }, { test: '123' }, { test: [1, 2, 3] }],
-      rules: {
-        test: 'min:1'
-      },
+      rules,
       test(errors) {
         return errors === null
       }
@@ -21,9 +25,7 @@ module.exports = function () {
         { test: '1234' },
         { test: [1, 2, 3, 4] }
       ],
-      rules: {
-        test: 'min:1'
-      },
+      rules,
       test(errors) {
         return (
           errors === null ||

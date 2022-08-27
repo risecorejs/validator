@@ -37,40 +37,76 @@ module.exports = function () {
           string: '123'
         }
       },
-      rules: {
-        '>=': {
-          number: ['if:number>=3', () => 'success'],
-          string: ['if:string>="123"', () => 'success']
+      rules: [
+        {
+          '>=': {
+            number: ['if:number>=3', () => 'success'],
+            string: ['if:string>="123"', () => 'success']
+          },
+          '>': {
+            number: ['if:number>3', () => 'failed'],
+            string: ['if:string>"123"', () => 'failed']
+          },
+          '<=': {
+            number: ['if:number<=3', () => 'success'],
+            string: ['if:string<="123"', () => 'success']
+          },
+          '<': {
+            number: ['if:number<3', () => 'failed'],
+            string: ['if:string<"123"', () => 'failed']
+          },
+          '!==': {
+            number: ['if:number!==3', () => 'failed'],
+            string: ['if:string!=="123"', () => 'failed']
+          },
+          '!=': {
+            number: ['if:number!=3', () => 'failed'],
+            string: ['if:string!="123"', () => 'failed']
+          },
+          '===': {
+            number: ['if:number===3', () => 'success'],
+            string: ['if:string==="123"', () => 'success']
+          },
+          '==': {
+            number: ['if:number==3', () => 'success'],
+            string: ['if:string=="123"', () => 'success']
+          }
         },
-        '>': {
-          number: ['if:number>3', () => 'failed'],
-          string: ['if:string>"123"', () => 'failed']
-        },
-        '<=': {
-          number: ['if:number<=3', () => 'success'],
-          string: ['if:string<="123"', () => 'success']
-        },
-        '<': {
-          number: ['if:number<3', () => 'failed'],
-          string: ['if:string<"123"', () => 'failed']
-        },
-        '!==': {
-          number: ['if:number!==3', () => 'failed'],
-          string: ['if:string!=="123"', () => 'failed']
-        },
-        '!=': {
-          number: ['if:number!=3', () => 'failed'],
-          string: ['if:string!="123"', () => 'failed']
-        },
-        '===': {
-          number: ['if:number===3', () => 'success'],
-          string: ['if:string==="123"', () => 'success']
-        },
-        '==': {
-          number: ['if:number==3', () => 'success'],
-          string: ['if:string=="123"', () => 'success']
+        {
+          '>=': {
+            number: [['if', 'number>=3'], () => 'success'],
+            string: [['if', 'string>="123"'], () => 'success']
+          },
+          '>': {
+            number: [['if', 'number>3'], () => 'failed'],
+            string: [['if', 'string>"123"'], () => 'failed']
+          },
+          '<=': {
+            number: [['if', 'number<=3'], () => 'success'],
+            string: [['if', 'string<="123"'], () => 'success']
+          },
+          '<': {
+            number: [['if', 'number<3'], () => 'failed'],
+            string: [['if', 'string<"123"'], () => 'failed']
+          },
+          '!==': {
+            number: [['if', 'number!==3'], () => 'failed'],
+            string: [['if', 'string!=="123"'], () => 'failed']
+          },
+          '!=': {
+            number: [['if', 'number!=3'], () => 'failed'],
+            string: [['if', 'string!="123"'], () => 'failed']
+          },
+          '===': {
+            number: [['if', 'number===3'], () => 'success'],
+            string: [['if', 'string==="123"'], () => 'success']
+          },
+          '==': {
+            number: [['if', 'number==3'], () => 'success'],
+            string: [['if', 'string=="123"'], () => 'success']
+          }
         }
-      },
+      ],
       test(errors) {
         return equal(errors, {
           '>=': { number: 'success', string: 'success' },
