@@ -60,7 +60,7 @@ export interface IErrorMessageArray {
   expectedType: (type: string) => string
 }
 
-export interface IErrorMessages {
+export interface IErrorMessages extends IFields {
   // COMPUTE
   find: (table: string) => string
   findRaw: string

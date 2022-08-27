@@ -42,7 +42,6 @@ export default async function (body: IFields, rules: IRules, options?: IOptions)
 
       // IS-STRING
       if (typeof rule === 'string') {
-        // @ts-ignore
         ruleContext.errorMessage = errorMessages[rule]
 
         const message = await executor(rule, ruleContext)

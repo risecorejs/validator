@@ -35,7 +35,6 @@ async function default_1(body, rules, options) {
             };
             // IS-STRING
             if (typeof rule === 'string') {
-                // @ts-ignore
                 ruleContext.errorMessage = errorMessages[rule];
                 const message = await executor(rule, ruleContext);
                 if (message) {

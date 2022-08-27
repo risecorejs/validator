@@ -1,4 +1,4 @@
-import { IFields, IRuleContext } from '../interfaces'
+import { IFields } from '../interfaces'
 
 export type TDialects = 'mysql' | 'postgres'
 
