@@ -5,7 +5,7 @@ module.exports = function () {
     {
       body: { test: null },
       rules: {
-        test: 'allowNull'
+        test: ['allowNull', () => 'failed']
       },
       test(errors) {
         return errors === null

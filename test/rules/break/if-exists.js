@@ -5,7 +5,7 @@ module.exports = function () {
     {
       body: {},
       rules: {
-        test: 'ifExists'
+        test: ['ifExists', () => 'failed']
       },
       test(errors) {
         return errors === null
