@@ -6,11 +6,9 @@ export default function (ctx: IRuleContext): string | void {
   }
 
   if (
-    !(
-      (typeof ctx.value === 'string' && ctx.value.length <= ctx.argument) ||
-      (typeof ctx.value === 'number' && ctx.value <= ctx.argument) ||
-      (Array.isArray(ctx.value) && ctx.value.length <= ctx.argument)
-    )
+    (typeof ctx.value === 'string' && ctx.value.length < ctx.argument) ||
+    (typeof ctx.value === 'number' && ctx.value < ctx.argument) ||
+    (Array.isArray(ctx.value) && ctx.value.length < ctx.argument)
   ) {
     return <string>ctx.errorMessage.main(ctx.argument)
   }

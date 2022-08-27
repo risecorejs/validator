@@ -11,5 +11,6 @@ module.exports = {
   between: require('./compute/between'),
   if: require('./compute/if'),
   length: require('./compute/length'),
-  max: require('./compute/max')
+  max: require('./compute/max'),
+  min: require('./compute/min')
 }
