@@ -70,7 +70,6 @@ export default async function (body: IFields, rules: IRules, options?: IOptions)
 
       // IS-OBJECT
       else if (rule.constructor === Object) {
-        // @ts-ignore
         ruleContext.errorMessage = errorMessages[rule.name]
         ruleContext.argument = rule.argument
 
