@@ -56,7 +56,6 @@ async function default_1(body, rules, options) {
             }
             // IS-OBJECT
             else if (rule.constructor === Object) {
-                // @ts-ignore
                 ruleContext.errorMessage = errorMessages[rule.name];
                 ruleContext.argument = rule.argument;
                 const message = await executor(rule.name, ruleContext);
