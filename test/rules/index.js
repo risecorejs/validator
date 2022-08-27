@@ -12,5 +12,6 @@ module.exports = {
   if: require('./compute/if'),
   length: require('./compute/length'),
   max: require('./compute/max'),
-  min: require('./compute/min')
+  min: require('./compute/min'),
+  only: require('./compute/only')
 }

@@ -14,18 +14,24 @@ void (async () => {
       const variant = variants[i]
       const id = i + 1
 
-      variant.body = Array.isArray(variant.body) ? variant.body : [variant.body]
+      variant.rules = Array.isArray(variant.rules) ? variant.rules : [variant.rules]
 
-      for (let i = 0; i < variant.body.length; i++) {
-        const body = variant.body[i]
+      for (let r = 0; r < variant.rules.length; r++) {
+        const rules = variant.rules[r]
 
-        await validator(body, variant.rules)
-          .then((errors) => {
-            if (!variant.test(errors)) {
-              console.log(`Test #${id}/${i} failed: [${ruleName}]`)
-            }
-          })
-          .catch((err) => console.error(`Test #${id}/${i} error: [${ruleName}]:`, err))
+        variant.body = Array.isArray(variant.body) ? variant.body : [variant.body]
+
+        for (let b = 0; b < variant.body.length; b++) {
+          const body = variant.body[b]
+
+          await validator(body, rules)
+            .then((errors) => {
+              if (!variant.test(errors)) {
+                console.log(`Test #${id}/R:${r}/B:${b} failed: [${ruleName}]`)
+              }
+            })
+            .catch((err) => console.error(`Test #${id}/${b} error: [${ruleName}]:`, err))
+        }
       }
     }
   }

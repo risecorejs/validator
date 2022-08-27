@@ -20,7 +20,7 @@ exports.default = {
         typeError: 'Тип может быть только: string, number, array',
         main: (num) => `Минимум: ${num}`
     },
-    only: (values) => `Разрешено только: ${values.join(', ')}`,
+    only: (values) => `Разрешено только: ${values.map((item) => JSON.stringify(item)).join(', ')}`,
     required: 'Обязательно',
     // ENTITIES
     date: 'Неверная дата',
