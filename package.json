@@ -7,9 +7,6 @@
     "type": "git",
     "url": "git+https://github.com/risecorejs/validator.git"
   },
-  "scripts": {
-    "test": "node test/index.js"
-  },
   "author": "Amenov Abdulsalam <risecorejs@gmail.com>",
   "license": "MIT",
   "bugs": {
