@@ -150,7 +150,7 @@ function getFormattedRulesRows(rules) {
  * EXECUTOR
  * @param ruleNameOrRuleHandler {TRuleNames | IRuleHandler}
  * @param ruleContext {IRuleContext}
- * @returns {TRuleHandler}
+ * @return {TRuleHandler}
  */
 function executor(ruleNameOrRuleHandler, ruleContext) {
     try {
