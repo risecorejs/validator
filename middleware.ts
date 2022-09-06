@@ -16,3 +16,11 @@ export default function (options: IOptions): express.Handler {
     next()
   }
 }
+
+declare global {
+  namespace Express {
+    export interface Request {
+      validator(rules: IRules): Promise<object | null>
+    }
+  }
+}
