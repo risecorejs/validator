@@ -19,7 +19,7 @@ export default function (options: IOptions): express.Handler {
 
 declare global {
   namespace Express {
-    interface Request {
+    export interface Request {
       validator(rules: IRules): Promise<object | null>
     }
   }
