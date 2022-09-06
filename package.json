@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/risecorejs/validator.git"
@@ -14,6 +15,9 @@
   },
   "homepage": "https://github.com/risecorejs/validator#readme",
   "dependencies": {
+    "@types/express": "^4.17.13",
+    "@types/lodash": "^4.14.184",
+    "@types/sequelize": "^4.28.14",
     "deep-equal": "^2.0.5",
     "express": "^4.18.1",
     "libphonenumber-js": "^1.9.8",
@@ -22,10 +26,7 @@
     "sequelize": "^6.21.4"
   },
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/lodash": "^4.14.184",
     "@types/node": "^18.7.11",
-    "@types/sequelize": "^4.28.14",
     "prettier": "^2.3.2",
     "typescript": "^4.7.4"
   }
